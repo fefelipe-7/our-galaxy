@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
 @layer base {
-  body {
-    @apply bg-cozy-cream text-cozy-deep;
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  ::selection {
+    background: #A8B5A0;
+    color: #fff;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    text-transform: lowercase;
   }
 }

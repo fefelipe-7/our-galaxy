@@ -29,7 +29,7 @@ const App: React.FC = () => {
     <HashRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<Welcome />} />
+          <Route path="/" element={<WelcomeNew />} />
           <Route path="/home" element={<Letters />} />
           <Route path="/letter/read/:id" element={<LetterRead />} />
           <Route path="/letter/write" element={<LetterWrite />} />

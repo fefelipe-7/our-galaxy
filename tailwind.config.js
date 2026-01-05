@@ -9,14 +9,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        'cozy-cream': '#FDF8F3',
-        'cozy-sand': '#F5E6D3',
-        'cozy-sage': '#A8B5A0',
-        'cozy-sageDark': '#7A8A72',
-        'cozy-sageLight': '#D4DDD0',
-        'cozy-clay': '#D4A574',
-        'cozy-deep': '#3D3D3D',
-        'cozy-charcoal': '#2A2A2A',
+        'cozy': {
+          'cream': '#FDF8F3',
+          'sand': '#F5E6D3',
+          'sage': '#A8B5A0',
+          'sageDark': '#7A8A72',
+          'sageLight': '#D4DDD0',
+          'clay': '#D4A574',
+          'deep': '#3D3D3D',
+          'charcoal': '#2A2A2A',
+        },
       },
       boxShadow: {
         'soft': '0 4px 12px rgba(0, 0, 0, 0.08)',
@@ -31,6 +33,10 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+      },
+      fontFamily: {
+        'sans': ['Nunito', 'sans-serif'],
+        'serif': ['Lora', 'serif'],
       },
     },
   },

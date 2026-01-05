@@ -21,46 +21,46 @@ const Welcome: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-screen w-full flex flex-col relative bg-cozy-cream overflow-hidden">
+    <div className="min-h-screen w-full max-w-md mx-auto flex flex-col relative bg-cozy-cream overflow-hidden">
       {/* Decorative Blobs */}
-      <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-cozy-sage/20 rounded-full blur-3xl opacity-60 animate-pulse-slow"></div>
-      <div className="absolute bottom-[-20px] left-[-20px] w-48 h-48 bg-cozy-clay/20 rounded-full blur-3xl opacity-60"></div>
+      <div className="absolute top-[-50px] right-[-50px] w-40 h-40 sm:w-64 sm:h-64 bg-cozy-sage/20 rounded-full blur-3xl opacity-60 animate-pulse-slow"></div>
+      <div className="absolute bottom-[-20px] left-[-20px] w-32 h-32 sm:w-48 sm:h-48 bg-cozy-clay/20 rounded-full blur-3xl opacity-60"></div>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-8 z-10 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-8 z-10 text-center py-8">
         {/* Animated Text Sequence */}
-        <div className="space-y-6 font-serif text-cozy-deep">
-          <h1 className={`text-4xl transition-all duration-1000 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className="space-y-4 sm:space-y-6 font-serif text-cozy-deep">
+          <h1 className={`text-3xl sm:text-4xl font-bold transition-all duration-1000 transform ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             Lento.
           </h1>
-          <h1 className={`text-4xl transition-all duration-1000 transform ${step >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <h1 className={`text-3xl sm:text-4xl font-bold transition-all duration-1000 transform ${step >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             Assíncrono.
           </h1>
-          <h1 className={`text-4xl transition-all duration-1000 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <h1 className={`text-3xl sm:text-4xl font-bold transition-all duration-1000 transform ${step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             Escolhido.
           </h1>
         </div>
 
         {/* Illustration appearing late */}
-         <div className={`mt-12 transition-opacity duration-1000 delay-500 ${step >= 3 ? 'opacity-100' : 'opacity-0'}`}>
-             <div className="relative w-48 h-48 mx-auto">
-                <div className="absolute inset-0 bg-cozy-sand rounded-full opacity-30 animate-pulse"></div>
-                <img 
-                    src="https://picsum.photos/seed/calm/400/400" 
-                    alt="Calm" 
-                    className="relative w-full h-full object-cover rounded-full shadow-soft border-4 border-white"
-                />
-             </div>
-         </div>
+        <div className={`mt-8 sm:mt-12 transition-opacity duration-1000 delay-500 ${step >= 3 ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="relative w-32 h-32 sm:w-48 sm:h-48 mx-auto">
+            <div className="absolute inset-0 bg-cozy-sand rounded-full opacity-30 animate-pulse"></div>
+            <img 
+              src="https://picsum.photos/seed/calm/400/400" 
+              alt="Calm" 
+              className="relative w-full h-full object-cover rounded-full shadow-soft border-4 border-white"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className={`p-8 pb-12 w-full transition-all duration-1000 transform ${step >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <div className={`px-4 sm:px-8 pb-6 sm:pb-12 w-full transition-all duration-1000 transform ${step >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <button 
           onClick={() => navigate('/home')}
-          className="group w-full bg-cozy-deep text-white text-lg font-bold py-5 rounded-[2rem] shadow-float hover:bg-cozy-charcoal active:scale-95 transition-all duration-300 flex items-center justify-between px-8"
+          className="group w-full bg-cozy-deep text-white font-bold py-4 sm:py-5 rounded-2xl sm:rounded-[2rem] shadow-float hover:bg-cozy-charcoal active:scale-95 transition-all duration-300 flex items-center justify-between px-6 sm:px-8 text-base sm:text-lg"
         >
           <span>Entrar no silêncio</span>
           <div className="bg-white/10 p-2 rounded-full group-hover:translate-x-1 transition-transform">
-             <ArrowRight size={20} className="text-cozy-cream" />
+            <ArrowRight size={18} className="text-cozy-cream" />
           </div>
         </button>
       </div>

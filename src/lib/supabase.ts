@@ -11,54 +11,71 @@ export type Database = {
       users: {
         Row: {
           id: string;
-          email: string;
+          name: string;
           created_at: string;
         };
         Insert: {
           id?: string;
-          email: string;
+          name: string;
           created_at?: string;
         };
         Update: {
-          email?: string;
+          name?: string;
         };
       };
       letters: {
         Row: {
           id: string;
           content: string;
-          author_id: string;
-          recipient_id: string;
-          status: 'enviada' | 'lida';
+          author_name: string;
+          recipient_name: string;
+          likes_count: number;
+          is_eternized: boolean;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
           content: string;
-          author_id: string;
-          recipient_id: string;
-          status?: 'enviada' | 'lida';
+          author_name: string;
+          recipient_name: string;
+          likes_count?: number;
+          is_eternized?: boolean;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
           content?: string;
-          status?: 'enviada' | 'lida';
+          likes_count?: number;
+          is_eternized?: boolean;
           updated_at?: string;
+        };
+      };
+      letter_likes: {
+        Row: {
+          id: string;
+          letter_id: string;
+          liker_name: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          letter_id: string;
+          liker_name: string;
+          created_at?: string;
         };
       };
       absences: {
         Row: {
           id: string;
           text: string;
-          user_id: string;
+          user_name: string;
           created_at: string;
         };
         Insert: {
           id?: string;
           text: string;
-          user_id: string;
+          user_name: string;
           created_at?: string;
         };
         Update: {
@@ -71,7 +88,7 @@ export type Database = {
           text: string;
           image_url: string;
           date: string;
-          user_id: string;
+          user_name: string;
           created_at: string;
         };
         Insert: {
@@ -79,45 +96,13 @@ export type Database = {
           text: string;
           image_url: string;
           date: string;
-          user_id: string;
+          user_name: string;
           created_at?: string;
         };
         Update: {
           text?: string;
           image_url?: string;
           date?: string;
-        };
-      };
-      locations: {
-        Row: {
-          id: string;
-          title: string;
-          description: string;
-          latitude: number;
-          longitude: number;
-          distance_km: number;
-          image_url: string;
-          user_id: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          title: string;
-          description: string;
-          latitude: number;
-          longitude: number;
-          distance_km: number;
-          image_url: string;
-          user_id: string;
-          created_at?: string;
-        };
-        Update: {
-          title?: string;
-          description?: string;
-          latitude?: number;
-          longitude?: number;
-          distance_km?: number;
-          image_url?: string;
         };
       };
     };

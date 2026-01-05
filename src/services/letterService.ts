@@ -3,19 +3,26 @@ import { supabase } from '../lib/supabase';
 export interface Letter {
   id: string;
   content: string;
-  author_id: string;
-  recipient_id: string;
-  status: 'enviada' | 'lida';
+  author_name: string;
+  recipient_name: string;
+  likes_count: number;
+  is_eternized: boolean;
   created_at: string;
   updated_at: string;
 }
 
+export interface LetterLike {
+  id: string;
+  letter_id: string;
+  liker_name: string;
+  created_at: string;
+}
+
 export const letterService = {
-  async getLetters(userId: string) {
+  async getLetters() {
     const { data, error } = await supabase
       .from('letters')
       .select('*')
-      .or(`author_id.eq.${userId},recipient_id.eq.${userId}`)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -33,34 +40,93 @@ export const letterService = {
     return data as Letter;
   },
 
-  async createLetter(content: string, authorId: string, recipientId: string) {
+  async createLetter(content: string, authorName: string, recipientName: string) {
     const { data, error } = await supabase
       .from('letters')
       .insert([
         {
           content,
-          author_id: authorId,
-          recipient_id: recipientId,
-          status: 'enviada',
+          author_name: authorName,
+          recipient_name: recipientName,
+          likes_count: 1,
+          is_eternized: false,
         },
       ])
       .select()
       .single();
 
     if (error) throw error;
+
+    // Adicionar like automático do autor
+    await supabase
+      .from('letter_likes')
+      .insert([
+        {
+          letter_id: data.id,
+          liker_name: authorName,
+        },
+      ]);
+
     return data as Letter;
   },
 
-  async updateLetterStatus(id: string, status: 'enviada' | 'lida') {
-    const { data, error } = await supabase
+  async addLike(letterId: string, likerName: string) {
+    // Verificar se já deu like
+    const { data: existingLike } = await supabase
+      .from('letter_likes')
+      .select('*')
+      .eq('letter_id', letterId)
+      .eq('liker_name', likerName)
+      .single();
+
+    if (existingLike) {
+      throw new Error('Você já curtiu esta carta');
+    }
+
+    // Adicionar like
+    const { error: likeError } = await supabase
+      .from('letter_likes')
+      .insert([
+        {
+          letter_id: letterId,
+          liker_name: likerName,
+        },
+      ]);
+
+    if (likeError) throw likeError;
+
+    // Atualizar contagem de likes
+    const { data: likes } = await supabase
+      .from('letter_likes')
+      .select('*')
+      .eq('letter_id', letterId);
+
+    const likesCount = likes?.length || 0;
+    const isEternized = likesCount >= 2;
+
+    const { data: updatedLetter, error: updateError } = await supabase
       .from('letters')
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq('id', id)
+      .update({
+        likes_count: likesCount,
+        is_eternized: isEternized,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', letterId)
       .select()
       .single();
 
+    if (updateError) throw updateError;
+    return updatedLetter as Letter;
+  },
+
+  async getLikes(letterId: string) {
+    const { data, error } = await supabase
+      .from('letter_likes')
+      .select('*')
+      .eq('letter_id', letterId);
+
     if (error) throw error;
-    return data as Letter;
+    return data as LetterLike[];
   },
 
   async deleteLetter(id: string) {
@@ -70,21 +136,5 @@ export const letterService = {
       .eq('id', id);
 
     if (error) throw error;
-  },
-
-  subscribeToLetters(userId: string, callback: (letters: Letter[]) => void) {
-    const subscription = supabase
-      .from('letters')
-      .on('*', (payload) => {
-        if (
-          payload.new.author_id === userId ||
-          payload.new.recipient_id === userId
-        ) {
-          callback([payload.new as Letter]);
-        }
-      })
-      .subscribe();
-
-    return subscription;
   },
 };

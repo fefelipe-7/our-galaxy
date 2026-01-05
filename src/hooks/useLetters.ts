@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react';
 import { letterService, Letter } from '../services/letterService';
 
-export const useLetters = (userId: string | null) => {
+export const useLetters = () => {
   const [letters, setLetters] = useState<Letter[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!userId) {
-      setLoading(false);
-      return;
-    }
-
     const fetchLetters = async () => {
       try {
         setLoading(true);
-        const data = await letterService.getLetters(userId);
+        const data = await letterService.getLetters();
         setLetters(data);
         setError(null);
       } catch (err) {
@@ -26,12 +21,11 @@ export const useLetters = (userId: string | null) => {
     };
 
     fetchLetters();
-  }, [userId]);
+  }, []);
 
-  const createLetter = async (content: string, recipientId: string) => {
-    if (!userId) throw new Error('Usuário não autenticado');
+  const createLetter = async (content: string, authorName: string, recipientName: string) => {
     try {
-      const newLetter = await letterService.createLetter(content, userId, recipientId);
+      const newLetter = await letterService.createLetter(content, authorName, recipientName);
       setLetters([newLetter, ...letters]);
       return newLetter;
     } catch (err) {
@@ -40,13 +34,13 @@ export const useLetters = (userId: string | null) => {
     }
   };
 
-  const updateLetterStatus = async (id: string, status: 'enviada' | 'lida') => {
+  const addLike = async (letterId: string, likerName: string) => {
     try {
-      const updated = await letterService.updateLetterStatus(id, status);
-      setLetters(letters.map(l => l.id === id ? updated : l));
+      const updated = await letterService.addLike(letterId, likerName);
+      setLetters(letters.map(l => l.id === letterId ? updated : l));
       return updated;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao atualizar carta');
+      setError(err instanceof Error ? err.message : 'Erro ao curtir carta');
       throw err;
     }
   };
@@ -66,7 +60,7 @@ export const useLetters = (userId: string | null) => {
     loading,
     error,
     createLetter,
-    updateLetterStatus,
+    addLike,
     deleteLetter,
   };
 };

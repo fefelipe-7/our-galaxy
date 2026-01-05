@@ -1,6 +1,5 @@
 import React from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
-import WelcomeNew from './pages/WelcomeNew';
 import Letters from './pages/Home';
 import LetterRead from './pages/LetterRead';
 import LetterWrite from './pages/LetterWrite';
@@ -29,7 +28,7 @@ const App: React.FC = () => {
     <HashRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<WelcomeNew />} />
+          <Route path="/" element={<Letters />} />
           <Route path="/home" element={<Letters />} />
           <Route path="/letter/read/:id" element={<LetterRead />} />
           <Route path="/letter/write" element={<LetterWrite />} />
